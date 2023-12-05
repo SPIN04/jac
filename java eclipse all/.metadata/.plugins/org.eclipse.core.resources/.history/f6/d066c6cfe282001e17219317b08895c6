@@ -1,0 +1,24 @@
+package it.jac.corsojava;
+import java.util.Scanner;
+public class Main1{
+	public static void main(String[] args) {
+		System.out.println("programma avviato");
+		System.out.println("argomento1 "+args[0]);
+		
+		try {
+			System.out.println("argomento2 "+args[1]);
+		} catch (Exception e) {
+			System.out.println("non mi hai passato un valore "+e);
+		}
+		
+		String str="ciao";
+		System.out.println(str);
+		/*try (Scanner scanner = new Scanner(System.in)) {
+			System.out.print("Enter your name: ");
+			String name = scanner.nextLine();
+			System.out.println("Hello, " + name + "!");
+		}catch (Exception e) {
+			System.out.println("hem errore");
+		}*/
+	}
+}
