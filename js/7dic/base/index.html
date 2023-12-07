@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <center>
+        <div>
+            <span><input type="number" id="a"><input type="number" id="b"></span><br>
+            <span>
+                <button onclick="operazione('+')" id="+">+</button>
+                <button onclick="operazione('-')" id="-">-</button>
+                <button onclick="operazione('*')" id="*">*</button>
+                <button onclick="operazione('/')" id="/">/</button>
+            </span>
+            <h1 id="ciao"></h1>
+        </div>
+    </center>
+</body>
+</html>
+<script>
+    function operazione(simbolo){
+
+        a = document.getElementById('a').value
+        b = document.getElementById('b').value
+        risultato = eval(a+simbolo+b)
+        document.getElementById('ciao').innerHTML=risultato
+    }
+</script>

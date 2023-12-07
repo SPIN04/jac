@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convertitore Binario-Decimale</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Convertitore Binario-Decimale</h2>
+    
+    <label for="binarioInput">Inserisci il numero binario:</label>
+    <input type="text" id="binarioInput" placeholder="Inserisci il numero binario">
+
+    <button onclick="binarioToDecimale()">Converti in Decimale</button>
+
+    <p>Risultato in Decimale: <span id="risultatoDecimale"></span></p>
+
+    <hr>
+
+    <h2>Convertitore Decimale-Binario</h2>
+    
+    <label for="decimaleInput">Inserisci il numero decimale:</label>
+    <input type="text" id="decimaleInput" placeholder="Inserisci il numero decimale">
+
+    <button onclick="decimaleToBinario()">Converti in Binario</button>
+
+    <p>Risultato in Binario: <span id="risultatoBinario"></span></p>
+
+    <script>
+        function binarioToDecimale() {
+            var binarioInput = document.getElementById('binarioInput').value;
+            var risultatoDecimale = parseInt(binarioInput, 2);
+            document.getElementById('risultatoDecimale').innerText = isNaN(risultatoDecimale) ? 'Inserisci un numero binario valido' : risultatoDecimale;
+        }
+
+        function decimaleToBinario() {
+            try {
+                var decimaleInput = eval(document.getElementById('decimaleInput').value);
+            } catch (error) {
+                decimaleInput=0
+            }
+            
+            var risultatoBinario = (parseInt(decimaleInput) >>> 0).toString(2);
+
+            // Aggiungi degli zeri all'inizio per ottenere una lunghezza multipla di 8
+            while (risultatoBinario.length % 8 !== 0) {
+                risultatoBinario = '0' + risultatoBinario;
+            }
+
+            // Aggiungi uno spazio ogni 8 cifre binarie
+            var risultatoConSpazi = '';
+            for (let i = 0; i < risultatoBinario.length; i++) {
+                risultatoConSpazi += risultatoBinario[i];
+                if ((i + 1) % 8 === 0 && i !== risultatoBinario.length - 1) {
+                    risultatoConSpazi += ' ';
+                }
+            }
+
+            document.getElementById('risultatoBinario').innerText = risultatoConSpazi;
+        }
+    </script>
+</body>
+</html>
