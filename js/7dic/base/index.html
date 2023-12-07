@@ -14,18 +14,17 @@
                 <button onclick="operazione('-')" id="-">-</button>
                 <button onclick="operazione('*')" id="*">*</button>
                 <button onclick="operazione('/')" id="/">/</button>
-            </span>
-            <h1 id="ciao"></h1>
+            </span><br>
+            <input type="text" name="" id="ciao" disabled>
         </div>
     </center>
 </body>
 </html>
 <script>
     function operazione(simbolo){
-
         a = document.getElementById('a').value
         b = document.getElementById('b').value
         risultato = eval(a+simbolo+b)
-        document.getElementById('ciao').innerHTML=risultato
+        document.getElementById('ciao').value=risultato
     }
 </script>
