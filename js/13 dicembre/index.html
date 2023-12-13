@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="css.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="nav">
+        <center><h1>spaccio ticket</h1></center>
+    </div>
+    <center>
+        <div class="input">
+        <span>
+            <h2>
+            quanti biglietti vuoi per il bellissimo evento?
+            <input type="number" id="numero" min="0" max="50" value="2">
+            <button onclick="genera()">aggiungi</button>
+            </h2>
+        </span>
+        </div>
+        <div id="biglietti">
+        
+        </div>
+    </center>
+
+</body>
+</html>
+<script>
+    function genera(){
+        totale=document.getElementById('numero').value;
+        console.log(totale)
+        for(i=0;i<totale;i++){
+            stampa()
+        }
+    }
+    function stampa(){
+        yee=document.getElementById('biglietti');
+        elimina=document.createElement('button').innerHTML='elimina'
+        yee.appendChild()
+    }
+</script>
