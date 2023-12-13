@@ -14,10 +14,12 @@
         <div class="input">
         <span>
             <h2>
-            quanti biglietti vuoi per il bellissimo evento?
-            <input type="number" id="numero" min="0" max="50" value="2">
+            quanti biglietti vuoi per il bellissimo evento? <br>
+            <button onclick="menus()">-1</button>
+            <input oninput="check()" type="text" id="numero" min="0" max="50" value="2">
+            <button onclick="plus()">+1</button><br>
             <button onclick="genera()">aggiungi</button>
-            <button onclick="stampa()">+1</button><br>
+            <button onclick="stampa()">aggiungine 1</button><br>
             totale <span id="totale">0</span>€
             </h2>
         </span>
@@ -31,9 +33,10 @@
 <script>
     function genera(){
         totale=document.getElementById('numero').value;
-        for(i=0;i<totale;i++){
+        for(i=0;i<=totale;i++){
             stampa()
         }
+        
     }
     val=0
     totcarrello=0
@@ -46,10 +49,14 @@
             cognome=document.createElement('input')
             elimina=document.createElement('button')
             br=document.createElement('br')
+            p=document.createElement('input')
             yee.appendChild(br)
+            linea.appendChild(p)
             linea.appendChild(nome)
             linea.appendChild(cognome)
             linea.appendChild(elimina)
+            p.setAttribute('id','a')
+            p.setAttribute('disabled','true')
             nome.setAttribute('type','text')
             cognome.setAttribute('type','text')
             nome.setAttribute('placeholder','nome')
@@ -69,6 +76,37 @@
         update()
     }
     function update(){
+        //rec()
         document.getElementById('totale').innerHTML=(69.90*totcarrello).toFixed(2)
+        rec()
+    }
+    function plus(){
+        input=document.getElementById('numero')
+        a=input.value
+        input.value=parseInt(a)+1
+    }
+    function menus(){
+        input=document.getElementById('numero')
+        a=input.value
+        if(parseInt(a)-1>=0){
+            input.value=parseInt(a)-1
+        }else{
+            alert('mara maionchi: we ciccio i biglietti non possono essere negativi è')
+        }
+    }
+    function check(){
+        a=document.getElementById('numero')
+        val=a.value.toLowerCase()
+        val=val.replace(/[a-zA-Z]/g, '');
+        val=val.replace(/[!"£$%&/()=?^#@[]°çòìù§éè  à_]/g,'')
+        val=val.replace('-','').replace('+','').replace('/','').replace('*','').replace('\\','').replace('|','')
+        a.value=val
+    }
+        function rec(){
+        vallll=document.querySelectorAll("[id='a']")
+        len=vallll.length
+        for(i=0;i<len;i++){
+            vallll[i].value='ospite '+(i+1)+' '
+        }
     }
 </script>
