@@ -17,11 +17,12 @@
             quanti biglietti vuoi per il bellissimo evento?
             <input type="number" id="numero" min="0" max="50" value="2">
             <button onclick="genera()">aggiungi</button>
+            <button onclick="stampa()">+1</button><br>
+            totale <span id="totale">0</span>€
             </h2>
         </span>
         </div>
         <div id="biglietti">
-        
         </div>
     </center>
 
@@ -30,14 +31,44 @@
 <script>
     function genera(){
         totale=document.getElementById('numero').value;
-        console.log(totale)
         for(i=0;i<totale;i++){
             stampa()
         }
     }
+    val=0
+    totcarrello=0
     function stampa(){
+        val=val+1
+        totcarrello+=1
         yee=document.getElementById('biglietti');
-        elimina=document.createElement('button').innerHTML='elimina'
-        yee.appendChild()
+            linea=document.createElement('span')
+            nome=document.createElement('input')
+            cognome=document.createElement('input')
+            elimina=document.createElement('button')
+            br=document.createElement('br')
+            yee.appendChild(br)
+            linea.appendChild(nome)
+            linea.appendChild(cognome)
+            linea.appendChild(elimina)
+            nome.setAttribute('type','text')
+            cognome.setAttribute('type','text')
+            nome.setAttribute('placeholder','nome')
+            cognome.setAttribute('placeholder','cognome')
+            elimina.innerHTML='elimina'
+            elimina.setAttribute('id',val)
+            linea.setAttribute('id',"l"+val)
+            br.setAttribute('id',"c"+val)
+            elimina.setAttribute('onclick',"del("+val+")")
+        yee.appendChild(linea)
+        update()
+    }
+    function del(vall){
+        totcarrello-=1
+        document.getElementById("l"+vall).remove()
+        document.getElementById("c"+vall).remove()
+        update()
+    }
+    function update(){
+        document.getElementById('totale').innerHTML=(69.90*totcarrello).toFixed(2)
     }
 </script>
