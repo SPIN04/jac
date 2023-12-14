@@ -33,7 +33,7 @@
 <script>
     function genera(){
         totale=document.getElementById('numero').value;
-        for(i=0;i<=totale;i++){
+        for(i=0;i<totale;i++){
             stampa()
         }
         
@@ -48,6 +48,7 @@
             nome=document.createElement('input')
             cognome=document.createElement('input')
             elimina=document.createElement('button')
+            
             br=document.createElement('br')
             p=document.createElement('input')
             yee.appendChild(br)
@@ -103,10 +104,12 @@
         a.value=val
     }
         function rec(){
-        vallll=document.querySelectorAll("[id='a']")
-        len=vallll.length
-        for(i=0;i<len;i++){
-            vallll[i].value='ospite '+(i+1)+' '
-        }
+        setTimeout(() => {
+            vallll=document.querySelectorAll("[id='a']")
+            len=vallll.length
+            for(i=0;i<len;i++){
+                vallll[i].value='ospite '+(i+1)+' '
+            }
+        }, 1);
     }
 </script>
