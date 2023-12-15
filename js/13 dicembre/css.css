@@ -27,8 +27,11 @@ button{
 input{
     text-align: center;
 }
-#a{
+.a{
     text-align: center;
     color: black;
     background-color: white;
+}
+ciao{
+    color: white;
 }

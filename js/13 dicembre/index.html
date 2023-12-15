@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="nav">
-        <center><h1>spaccio ticket</h1></center>
+        <center><h1>spaccio ticket <span style="color: rgb(210, 0, 0);">e non solo</span></h1></center>
     </div>
     <center>
         <div class="input">
@@ -25,18 +25,19 @@
         </span>
         </div>
         <div id="biglietti">
+        <div id="biglietti">
         </div>
     </center>
-
 </body>
 </html>
 <script>
+genitore=0
     function genera(){
         totale=document.getElementById('numero').value;
         for(i=0;i<totale;i++){
             stampa()
         }
-        
+        bammx()
     }
     val=0
     totcarrello=0
@@ -48,37 +49,56 @@
             nome=document.createElement('input')
             cognome=document.createElement('input')
             elimina=document.createElement('button')
-            
+            chekc=document.createElement('input')
             br=document.createElement('br')
             p=document.createElement('input')
+            bambino=document.createElement('ciao')
+
             yee.appendChild(br)
             linea.appendChild(p)
             linea.appendChild(nome)
             linea.appendChild(cognome)
             linea.appendChild(elimina)
-            p.setAttribute('id','a')
+            linea.appendChild(bambino)
+            linea.appendChild(chekc)
+
+            p.setAttribute('name','a')
+            p.setAttribute('class','a')
+            p.setAttribute('id','aaa'+val)
             p.setAttribute('disabled','true')
             nome.setAttribute('type','text')
             cognome.setAttribute('type','text')
+            chekc.setAttribute('type','checkbox')
             nome.setAttribute('placeholder','nome')
             cognome.setAttribute('placeholder','cognome')
             elimina.innerHTML='elimina'
+            bambino.innerHTML="Bambino"
+            chekc.setAttribute('onclick',"bammx()")
+            chekc.setAttribute('id',"cc"+val)
+            chekc.setAttribute('name',"Cont")
+
             elimina.setAttribute('id',val)
             linea.setAttribute('id',"l"+val)
             br.setAttribute('id',"c"+val)
             elimina.setAttribute('onclick',"del("+val+")")
+
         yee.appendChild(linea)
         update()
+        setTimeout(() => {
+            bammx()
+        }, 1);
     }
     function del(vall){
         totcarrello-=1
         document.getElementById("l"+vall).remove()
         document.getElementById("c"+vall).remove()
         update()
+        //bammx()
+        bmm()
     }
     function update(){
         //rec()
-        document.getElementById('totale').innerHTML=(69.90*totcarrello).toFixed(2)
+        document.getElementById('totale').innerHTML=(69.90*genitore).toFixed(2)
         rec()
     }
     function plus(){
@@ -105,11 +125,105 @@
     }
         function rec(){
         setTimeout(() => {
-            vallll=document.querySelectorAll("[id='a']")
+            vallll=document.querySelectorAll("[name='a']")
             len=vallll.length
-            for(i=0;i<len;i++){
+            i=0
+            for(i;i<len;i++){
                 vallll[i].value='ospite '+(i+1)+' '
             }
         }, 1);
+    }
+    function bammx(){
+        //checketa()
+        genitore=0
+        bambino=document.querySelectorAll("[name='Cont']")
+        len=bambino.length
+        i=0
+        
+        for(i;i<len;i++){
+            roba=crearoba(i)
+            avalue=''
+            if(a=document.getElementById('var'+i)){
+                    avalue=document.getElementById('eta'+i).value
+                    a.remove()
+                }
+            if(!bambino[i].checked){
+                if(a=document.getElementById('var'+i)){
+                    a.remove()
+                }
+                genitore++
+            }else{
+                idD=bambino[i].getAttribute('id')
+                document.getElementById(idD).after(roba)
+                document.getElementById('eta'+i).value=avalue
+
+                
+            }
+        }
+        update()
+    }
+    function bmm(){
+        //checketa()
+        genitore=0
+        bambino=document.querySelectorAll("[name='Cont']")
+        len=bambino.length
+        i=0
+        
+        for(i;i<len;i++){
+            roba=crearoba(i)
+            avalue=''
+            if(!bambino[i].checked){
+                genitore++
+            }else{
+            }
+        }
+        update()
+    }
+    function checketa(i){
+        val=document.getElementById('eta'+i).value
+        id='cc'+(parseInt(i)+1)
+        //console.log(id)
+        if(val<18 && val>=15){
+            bammx()
+            genitore+=0.5
+            update()
+        }else if(val<15 && val>=5){
+            bammx()
+            genitore+=0.25
+            update()
+        }else if(val<5 && val>=0){
+            bammx()
+            //genitore-=1
+            update()
+        }else{
+            document.getElementById(id).checked=false
+            bammx()
+        }
+        console.log(genitore)
+
+    }
+    function crearoba(id){
+        obj=document.createElement('span')
+        input=document.createElement('input')
+        input.setAttribute('placeholder','eta2')
+        input.setAttribute('id','eta'+id)
+        input.addEventListener('blur', function() {
+            //console.log(this.getAttribute('id').replace('eta',''));
+            setinput(this.getAttribute('id'))
+            checketa(this.getAttribute('id').replace('eta','')); // Esegui la funzione cia() quando l'elemento perde il focus
+            
+        });
+        obj.appendChild(input)
+        obj.setAttribute('id',"var"+id)
+        return(obj)
+        
+    }
+    function setinput(id){
+        a=document.getElementById(id)
+        val=a.value.toLowerCase()
+        val=val.replace(/[a-zA-Z]/g, '');
+        val=val.replace(/[!"£$%&/()=?^#@[]°çòìù§éè  à_]/g,'')
+        val=val.replace('-','').replace('+','').replace('/','').replace('*','').replace('\\','').replace('|','')
+        a.value=val
     }
 </script>
