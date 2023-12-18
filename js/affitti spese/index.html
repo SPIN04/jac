@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css.css">
+    <title>Gestione Spese</title>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <h1>Gestione spese</h1>
+        </div>
+        <div id="content">
+            <button class="add" onclick="genera_riga()">Genera riga</button><br>
+            <button class="add" onclick="conteggio('tab0')">Genera riga totale</button><br>
+            <button class="add" onclick="aggiungi()">ADD</button><br>
+            <button class="add" onclick="genera()">PROVA</button><br>
+            <div id="campi"></div>
+            <div id="tabella"></div>
+        </div>
+        <div id="footer"></div>
+    </div>
+
+    <script>
+        campi = document.getElementById('campi');
+        contatore_input = 0;
+        totale_input_validi = 0;
+        conto_linee = 0;
+        id_riga = 0;
+        id_totale = 0;
+
+        function genera() {
+            divTabella = document.getElementById("tabella");
+            divTabella.innerHTML = "";
+            creaIntestazione("Elimina");
+            creaIntestazione("Totale");
+        }
+
+        function aggiungi() {
+            if (contatore_input >= 4) {
+                return;
+            }
+
+            span = document.createElement('span');
+            input = document.createElement('input');
+            button = document.createElement('button');
+
+            span.setAttribute('id', 'span' + contatore_input);
+            input.setAttribute('id', 'campo' + contatore_input);
+            input.setAttribute('name', 'campo');
+            button.setAttribute('id', 'del' + contatore_input);
+            button.setAttribute('class', 'button');
+            button.setAttribute('onclick', 'delcampo(' + contatore_input + ')');
+            button.innerHTML = 'Elimina';
+
+            span.appendChild(input);
+            span.appendChild(button);
+            campi.appendChild(span);
+
+            contatore_input++;
+            totale_input_validi++;
+        }
+
+        function delcampo(idconto) {
+            totale_input_validi--;
+            document.getElementById('span' + idconto).remove();
+            header_tabella();
+        }
+
+        function genera_riga() {
+            tabella = document.getElementById('table1');
+            tr = document.createElement('tr');
+            td_button = document.createElement('td');
+            delriga = document.createElement('button');
+
+            td_button.setAttribute('class', 'cella');
+            delriga.after(' ');
+            tr.setAttribute('id', 'riga' + id_riga);
+            delriga.innerHTML = 'elimina';
+            delriga.setAttribute('onclick', 'rimuovi_riga(' + id_riga + ')');
+
+            td_button.appendChild(delriga);
+            tr.appendChild(td_button);
+
+            for (i = 0; i < totale_input_validi; i++) {
+                td_input = document.createElement('td');
+                campo = document.createElement('input');
+                campo.setAttribute('id', 'tab' + i);
+                campo.setAttribute('name', 'campobello');
+                campo.setAttribute('oninput', 'conteggio("tab' + i + '")');
+                campo.setAttribute('type', 'text');
+                campo.setAttribute('value', 0.0);
+                campo.setAttribute('class', 'input_cella');
+                td_input.setAttribute('class', 'cella');
+                td_input.appendChild(campo);
+                tr.appendChild(td_input);
+            }
+
+            tabella.appendChild(tr);
+            id_riga++;
+        }
+
+        function creaIntestazione(tabellaTipo) {
+            var elements = document.querySelectorAll("[name='campo']");
+            var divTabella = document.getElementById("tabella");
+            var header = document.createElement("table");
+
+            if (tabellaTipo === "Elimina") {
+                header.setAttribute("id", "table1");
+            } else {
+                header.setAttribute("id", "table2");
+            }
+
+            header.setAttribute("class", "table");
+            var riga = document.createElement("tr");
+            var cella = document.createElement("th");
+            cella.setAttribute("id", "intestazione" + tabellaTipo);
+            cella.setAttribute("class", "cella intestazione");
+
+            if (tabellaTipo === "Elimina") {
+                cella.innerHTML = "Elimina";
+            } else {
+                cella.innerHTML = "Totale";
+            }
+
+            riga.appendChild(cella);
+
+            for (var i = 0; i < elements.length; i++) {
+                cella = document.createElement("th");
+                cella.setAttribute("id", "intestazioneTotale" + i);
+                cella.setAttribute("class", "cella intestazione");
+
+                if (tabellaTipo === "Elimina") {
+                    cella.innerHTML = elements[i].value;
+                } else {
+                    cella.innerHTML = "Totale " + elements[i].value;
+                }
+
+                riga.appendChild(cella);
+            }
+
+            header.appendChild(riga);
+            divTabella.appendChild(header);
+        }
+
+        function rimuovi_riga(id) {
+            id = 'riga' + id;
+            document.getElementById(id).remove();
+            conteggioall()
+        }
+
+        function conteggio(chi) {
+            genera_linea_totali();
+            id_destinazione = chi.replace('tab', 'tot');
+            destination = document.getElementById(id_destinazione);
+
+            array_valori = document.querySelectorAll("[id='" + chi + "']");
+            totale = 0;
+
+            for (i = 0; i < array_valori.length; i++) {
+                totale += parseFloat(array_valori[i].value) || 0;
+            }
+
+            destination.value = totale.toFixed(2);
+            print_totale()
+        }
+        function conteggioall() {
+            chi='tab'
+
+            for(j=0;j<totale_input_validi;j++){
+                chi+=j
+                console.log(chi)
+                genera_linea_totali();
+                id_destinazione = chi.replace('tab', 'tot');
+                destination = document.getElementById(id_destinazione);
+
+                array_valori = document.querySelectorAll("[id='" + chi + "']");
+                totale = 0;
+
+                for (i = 0; i < array_valori.length; i++) {
+                    totale += parseFloat(array_valori[i].value) || 0;
+                }
+
+                destination.value = totale.toFixed(2);
+                chi='tab'
+            }
+            print_totale()
+        }
+        flag=0
+        function genera_linea_totali() {
+            if(flag>0){
+                return
+            }
+            tabella = document.getElementById('table2');
+            tr = document.createElement('tr');
+            td_button = document.createElement('td');
+
+            td_button.setAttribute('class', 'cella');
+            tr.setAttribute('id', 'riga' + id_totale);
+
+            for (i = 0; i <= totale_input_validi; i++) {
+                td_input = document.createElement('td');
+                campo = document.createElement('input');
+                campo.setAttribute('id', 'tot' + (i - 1));
+                campo.setAttribute('oninput', 'conteggio("tab' + i + '")');
+                campo.setAttribute('class', 'input_cella');
+                td_input.setAttribute('class', 'cella');
+                td_input.appendChild(campo);
+                tr.appendChild(td_input);
+            }
+
+            tabella.appendChild(tr);
+            id_totale++;
+            flag++
+        }
+
+
+        function print_totale() {
+            output = document.getElementById('tot-1');
+            somma = 0;
+
+            for (i = 0; i < totale_input_validi; i++) {
+                a = parseFloat(document.getElementById('tot' + i).value);
+
+                // Verifica se 'a' è un numero valido
+                if (!isNaN(a)) {
+                    somma += a;
+                }
+            }
+
+            // Assegna la somma al campo di output
+            output.value = isNaN(somma) ? 0 : somma;
+        }
+    </script>
+</body>
+</html>

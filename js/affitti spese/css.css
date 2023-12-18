@@ -1,0 +1,27 @@
+.add{
+    margin-right: 20px;
+}
+
+.button{
+    margin-right: 20px;
+    background-color: red;
+}
+
+.table{
+    border: 1px solid black;
+    padding: 1px;
+    width: 100%;
+}
+
+.cella{
+    border: 1px solid black;
+    width: 20%;
+}
+
+.intestazione{
+    color: red;
+}
+
+.input_cella{
+    width: 98.6%;
+}
