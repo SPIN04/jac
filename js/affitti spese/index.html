@@ -7,22 +7,35 @@
     <title>Gestione Spese</title>
 </head>
 <body>
+    <!-- Contenitore principale -->
     <div id="container">
+        <!-- Header -->
         <div id="header">
             <h1>Gestione spese</h1>
         </div>
+
+        <!-- Contenuto principale -->
         <div id="content">
+            <!-- Pulsanti di azione -->
             <button class="add" onclick="genera_riga()">Genera riga</button><br>
             <button class="add" onclick="conteggio('tab0')">Genera riga totale</button><br>
             <button class="add" onclick="aggiungi()">ADD</button><br>
             <button class="add" onclick="genera()">PROVA</button><br>
+
+            <!-- Campi di input dinamici -->
             <div id="campi"></div>
+
+            <!-- Tabella dinamica -->
             <div id="tabella"></div>
         </div>
+
+        <!-- Footer -->
         <div id="footer"></div>
     </div>
 
+    <!-- Script JavaScript -->
     <script>
+        // Variabili globali
         campi = document.getElementById('campi');
         contatore_input = 0;
         totale_input_validi = 0;
@@ -30,6 +43,7 @@
         id_riga = 0;
         id_totale = 0;
 
+        // Funzione per inizializzare la tabella
         function genera() {
             divTabella = document.getElementById("tabella");
             divTabella.innerHTML = "";
@@ -37,6 +51,7 @@
             creaIntestazione("Totale");
         }
 
+        // Funzione per aggiungere un nuovo campo di input
         function aggiungi() {
             if (contatore_input >= 4) {
                 return;
@@ -62,12 +77,14 @@
             totale_input_validi++;
         }
 
+        // Funzione per rimuovere un campo di input
         function delcampo(idconto) {
             totale_input_validi--;
             document.getElementById('span' + idconto).remove();
             header_tabella();
         }
 
+        // Funzione per generare una nuova riga nella tabella
         function genera_riga() {
             tabella = document.getElementById('table1');
             tr = document.createElement('tr');
@@ -101,6 +118,7 @@
             id_riga++;
         }
 
+        // Funzione per creare l'intestazione della tabella
         function creaIntestazione(tabellaTipo) {
             var elements = document.querySelectorAll("[name='campo']");
             var divTabella = document.getElementById("tabella");
@@ -144,12 +162,14 @@
             divTabella.appendChild(header);
         }
 
+        // Funzione per rimuovere una riga dalla tabella
         function rimuovi_riga(id) {
             id = 'riga' + id;
             document.getElementById(id).remove();
             conteggioall()
         }
 
+        // Funzione per gestire il conteggio
         function conteggio(chi) {
             genera_linea_totali();
             id_destinazione = chi.replace('tab', 'tot');
@@ -165,6 +185,8 @@
             destination.value = totale.toFixed(2);
             print_totale()
         }
+
+        // Funzione per gestire il conteggio di tutte le righe
         function conteggioall() {
             chi='tab'
 
@@ -187,7 +209,11 @@
             }
             print_totale()
         }
+
+        // Variabile di flag
         flag=0
+
+        // Funzione per generare una riga di totali
         function genera_linea_totali() {
             if(flag>0){
                 return
@@ -215,7 +241,7 @@
             flag++
         }
 
-
+        // Funzione per calcolare e visualizzare il totale
         function print_totale() {
             output = document.getElementById('tot-1');
             somma = 0;
