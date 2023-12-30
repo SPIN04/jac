@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quadrato con Bordo di Asterischi</title>
+    <style>
+        #quadrato {
+            font-family: monospace; /* Per mantenere la larghezza fissa dei caratteri */
+        }
+    </style>
+</head>
+<body>
+
+<div id="quadrato"></div>
+
+<script>
+    function stampaQuadrato(lato) {
+        let quadrato = '';
+        
+        // Costruisci il bordo superiore
+        for (let i = 0; i < lato; i++) {
+            quadrato += '* ';
+        }
+        quadrato += '<br>'; // Vai a capo dopo il bordo superiore
+
+        // Costruisci il corpo del quadrato
+        for (let i = 1; i < lato - 1; i++) {
+            quadrato += '* '; // Asterisco a sinistra
+
+            // Costruisci gli spazi vuoti all'interno del quadrato
+            for (let j = 1; j < lato - 1; j++) {
+                quadrato += '&nbsp;&nbsp;';
+            }
+
+            quadrato += '*<br>'; // Asterisco a destra e vai a capo
+        }
+
+        // Costruisci il bordo inferiore
+        for (let i = 0; i < lato; i++) {
+            quadrato += '* ';
+        }
+
+        // Aggiungi il quadrato al div con id "quadrato" nel corpo della pagina
+        document.getElementById('quadrato').innerHTML = quadrato;
+    }
+
+    // Esempio con un quadrato di lato 5
+    stampaQuadrato(10);
+</script>
+
+</body>
+</html>
