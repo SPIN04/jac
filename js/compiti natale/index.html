@@ -4,90 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-</head>
- <style>
-        body{
+    <style>
+        body {
             background-color: rgb(39, 39, 39);
-        }
-
-        #risultato{
             color: aliceblue;
         }
     </style>
+</head>
 <body>
     <div id="input">
         <input type="number" name="inputStart" id="inputStart">
-        <button onclick="generacoso()" id="start_button">Esegui</button>
+        <button onclick="generaCoso()" id="start_button">Esegui</button>
     </div>
     <div id="aaa"></div>
-    <p id="cjsksudfgyu"></p>
+    <p id="risultato"></p>
+
+    <script>
+        const arrai = [];
+
+        function elimina(id) {
+            document.getElementById(id).remove();
+            arrai.splice(parseInt(id.replace('div_', '')), 1);
+            console.log(arrai);
+            ricalcola();
+        }
+
+        function modifica(id) {
+            const valore = document.getElementById(id).value;
+            const index = parseInt(id.replace('input_', ''));
+            arrai[index] = valore;
+            stampa();
+        }
+
+        function generaCoso() {
+            const valore = document.getElementById("inputStart").value;
+            if (valore === "") return;
+
+            const l = arrai.length;
+            const div = document.createElement('div');
+            const input = document.createElement('input');
+            const button = document.createElement('button');
+
+            div.setAttribute('id', `div_${l}`);
+            input.setAttribute('id', `input_${l}`);
+            input.setAttribute('onchange', `modifica('input_${l}')`);
+            button.setAttribute('id', `button_${l}`);
+            button.setAttribute('onclick', `elimina('div_${l}')`);
+
+            input.setAttribute('value', valore);
+
+            button.innerText = "X";
+
+            div.appendChild(input);
+            div.appendChild(button);
+            document.getElementById("aaa").appendChild(div);
+            arrai.push(valore);
+
+            stampa();
+        }
+
+        function ricalcola() {
+            const divs = document.querySelectorAll('[id^="div_"]');
+            const buttons = document.querySelectorAll('[id^="button_"]');
+            const inputs = document.querySelectorAll('[id^="input_"]');
+
+            divs.forEach((div, index) => {
+                div.id = `div_${index}`;
+                buttons[index].id = `button_${index}`;
+                inputs[index].id = `input_${index}`;
+                inputs[index].setAttribute('onchange', `modifica('input_${index}')`);
+                buttons[index].setAttribute('onclick', `elimina('div_${index}')`);
+            });
+
+            stampa();
+        }
+
+        function stampa() {
+            const tagRisultato = document.getElementById("risultato");
+            tagRisultato.innerText = `[${arrai.join(", ")}]`;
+        }
+    </script>
 </body>
 </html>
-<script>
-    arrai=[]
-    function elimina(id){
-        document.getElementById(id).remove()
-        //converte l'id del div in un indice dell'array
-        arrai.splice(parseInt(id.replace('div_','')),1)
-        console.log(arrai)
-        ricalcola()
-    }
-    function modifica(id){
-        valore=document.getElementById(id).value
-        id=parseInt(id.replace('input_',''))
-        arrai[id]=valore
-    }
-
-    function generacoso(){
-        valore = document.getElementById("inputStart").value
-
-        l=arrai.length
-
-        //crea tag
-        div=document.createElement('div')
-        input=document.createElement('input')
-        button=document.createElement('button')
-        button.setAttribute("class", "bottoneElimina")
-        button.innerText="X"
-
-        //imposta attributi per la gestione degli indici
-        div.setAttribute('div','si')
-        div.setAttribute('id','div_'+l)
-
-        input.setAttribute('id','input_'+l)
-        input.setAttribute('input','si')
-        input.setAttribute('onchange',`modifica('input_${l}')`)
-        
-        button.setAttribute('id','button_'+l)
-        button.setAttribute('onclick', `elimina('div_${l}')`);
-        button.setAttribute('button','si')
-
-        //posizione dell'array su cui agisce
-        input.setAttribute('indice',l)
-
-        //copia il valore del tag input 
-        input.setAttribute('value',valore) 
-        
-        //append dei tag al document
-        div.appendChild(input)
-        div.appendChild(button)
-        document.getElementById("aaa").appendChild(div)
-        arrai.push(valore)
-    }
-
-    function ricalcola(){
-        div=document.querySelectorAll('[div="si"]')
-        button=document.querySelectorAll('[button="si"]')
-        input=document.querySelectorAll('[input="si"]')
-        len=div.length
-
-        //rimappa gli indici sulla lunghezza degli array
-        for(i=0;i<len;i++){
-            div[i].setAttribute('id','div_'+i)
-            input[i].setAttribute('id','input_'+i)
-            input[i].setAttribute('onchange',`modifica('input_${i}')`)
-            button[i].setAttribute('id','button_'+i)
-            button[i].setAttribute('onclick', `elimina('div_${i}')`)
-        }
-    }
-</script>
