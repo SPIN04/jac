@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body{
+            background-color: rgb(39, 39, 39);
+        }
+
+        #risultato{
+            color: aliceblue;
+        }
+    </style>
+</head>
+<body>
+    <input type="number" name="input" id="input" oninput="calcola()">
+    <p id="risultato"></p>
+</body>
+</html>
+
+<script>
+    function calcola() {
+    var input = document.getElementById('input');
+    var numero = input.value;
+    var risultato = "Palindromo";
+
+    var l = numero.length;
+
+    // se è lungo 1 o meno è palindromo
+    if (l > 1) {
+        var j = l - 1;
+        for (var i = 0; i < Math.floor(l / 2); i++) {
+            console.log(numero[i], numero[j], Math.floor(l / 2));
+            if (numero[i] !== numero[j]) {
+                // non palindromo
+                risultato = "Non palindromo";
+                break;  // interrompe il loop se non è un palindromo
+            }
+            j--;
+        }
+    }
+
+    // palindromo
+    document.getElementById("risultato").innerHTML = risultato;
+}
+
+</script>
