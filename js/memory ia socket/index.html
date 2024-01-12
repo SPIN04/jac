@@ -141,45 +141,13 @@
         </table>
     </center>
     <script>
-        const player=true
-        const bot=false
-        turno=player
-function mossabot(matrice) {
-    console.log('bot')
-    var len = matrice.length;
+        
 
-    for (var i = 0; i < len; i++) {
-        for (var j = 0; j < len; j++) {
-            var valoreCorrente = matrice[i][j];
 
-            // Scorrere il resto della matrice per trovare valori identici
-            for (var k = 0; k < len; k++) {
-                for (var l = 0; l < len; l++) {
-                    if (valoreCorrente == matrice[k][l] && (i != k || j != l) && valoreCorrente != undefined && valoreCorrente != 'finded') {
-                        
-                        girata=[]
-                        id=[]
-                        document.querySelector('[pos="'+i+','+j+'"]').click();
-                        document.querySelector('[pos="'+k+','+l+'"]').click();
 
-                        return
-                    }
-                }
-            }
-        }
-    }
-    
-    do {
-        var x = Math.floor(Math.random() * len);
-        var y = Math.floor(Math.random() * len);
-    } while (memoria[y][x] == 'finded');
-    do {
-        var x2 = Math.floor(Math.random() * len);
-        var y2 = Math.floor(Math.random() * len);
-    } while (memoria[y][x] == 'finded');
-    document.querySelector('[pos="'+y+','+x+'"]').click();
-    document.querySelector('[pos="'+y2+','+x2+'"]').click();
-}
+
+        
+
 
 
 
@@ -311,25 +279,23 @@ function mossabot(matrice) {
                         console.error('Error:', error);
                     });
                 }
-
+idtmp=[]
 function handleCardLogic(imageUrl, pos) {
     return new Promise((resolve, reject) => {
         
         girata.push(imageUrl);
         id.push(pos);
         
-        if (girata.length === 2) {
+        if (girata.length == 2) {
             idtmp=id
-            if (girata[0] !== girata[1]) {
-                if(turno==player){
-                    turno=bot
+            if (girata[0] != girata[1]) {
+                if(turno==true){
                     setTimeout(() => {
                         mossabot(memoria)
-                        console.log('bot player errore')
-                    }, 1000);
-                }else{
-                    turno=player
+                    }, 2000);
                 }
+                turno=!turno
+                
                 id = [];
                 girata = [];
                 resolve();
@@ -343,16 +309,17 @@ function handleCardLogic(imageUrl, pos) {
                 }, 500);
                 // Reset cards after a delay
             } else {
-                
+                if(turno==false){
+                    setTimeout(() => {
+                        mossabot(memoria)
+                    }, 3000);
+                }
                 // Same cards were clicked, log an error and resolve
                 
                 id = [];
                 girata = [];
                 
-                    if(!turno){
-                        console.log('bot continua corretto')
-                        mossabot(memoria)
-                    }
+                    
                 primo=idtmp[0]
                 secondo=idtmp[1]
                 x1=primo.split(',')[1]
@@ -376,11 +343,6 @@ function handleCardLogic(imageUrl, pos) {
     });
 }
 
-
-
-
-
-
 function cover(poss) {
     a = poss[0];
     b = poss[1];
@@ -398,10 +360,14 @@ function cover(poss) {
 
     // Dopo l'animazione di copertura, inverti il turno
     setTimeout(() => {
-        turno = !turno;  // Inverti direttamente il turno
+        //turno = !turno;  // Inverti direttamente il turno
         document.getElementById('block').style.display = 'none';
     }, 500);
 }
+
+
+
+
 
             function generariga(ncelle, numriga) {
                 var table = document.getElementById('myTable');
@@ -468,6 +434,98 @@ function cover(poss) {
                 return 300;
             }
         }
+
+
+
+
+
+
+
+        function mossabot(matrice) {
+            correct=0
+            
+                
+                //console.log('bot')
+    var len = matrice.length;
+
+for (var i = 0; i < len; i++) {
+    for (var j = 0; j < len; j++) {
+        var valoreCorrente = matrice[i][j];
+
+        // Scorrere il resto della matrice per trovare valori identici
+        for (var k = 0; k < len; k++) {
+            for (var l = 0; l < len; l++) {
+                if (valoreCorrente == matrice[k][l] && (i != k || j != l) && valoreCorrente != undefined && valoreCorrente != 'finded' && turno==false) {
+                    
+                    girata=[]
+                    id=[]
+                    document.querySelector('[pos="'+i+','+j+'"]').click();
+                    document.querySelector('[pos="'+k+','+l+'"]').click();
+                    
+                        
+                            console.log('run correct')
+                            
+                            
+                                
+                            
+                        
+                            
+
+                        
+                    
+                    
+                    correct=1
+                    return
+                }
+            }
+            
+        }
+    }
+}
+
+                    if(correct==0){
+                        console.log('run random')
+                    girata=[]
+                    id=[]
+                    x,y,x2,y2=0
+                    do{
+                        do {
+                        var x = Math.floor(Math.random() * len);
+                        var y = Math.floor(Math.random() * len);
+                    } while (memoria[y][x] == 'finded');
+                    do{
+                        do {
+                            var x2 = Math.floor(Math.random() * len);
+                            var y2 = Math.floor(Math.random() * len);
+                        } while (memoria[y][x] == 'finded');
+                    }while(x==x2 && y==y2)
+                    }while(
+                        document.querySelector('[pos="'+y+','+x+'"]').getAttribute('class')=='clicked'
+                        ||
+                        document.querySelector('[pos="'+y2+','+x2+'"]').getAttribute('class')=='clicked'
+                        )
+                        console.log(document.querySelector('[pos="'+y+','+x+'"]').getAttribute('class'),'   ',document.querySelector('[pos="'+y2+','+x2+'"]').getAttribute('class'))
+                    document.querySelector('[pos="'+y+','+x+'"]').click();
+                    document.querySelector('[pos="'+y2+','+x2+'"]').click();
+                    
+                    if(disposizione[y][x]==disposizione[y2][x2]){
+                        console.log('che fortuna')
+                        
+                            
+                        
+                    }else{
+                        turno=true
+                        return
+                    }
+                    }
+                    
+                        
+                    
+            
+            }
+        
+    
+   
     </script>
 
 </body>
