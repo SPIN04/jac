@@ -201,7 +201,7 @@
 
             return matrix;
         }
-ia=0
+
         function set() {
             difficolta = document.getElementById('difficultyRange').value;
             emoji = (difficolta == 0) ? '⚪' : (difficolta == 20) ? '🟢' : (difficolta == 40) ? '🟡' :
@@ -467,7 +467,7 @@ function cover(poss) {
 
 
         function mossabot(matrice) {
-            if(fine() || ia==0){
+            if(fine()){
                 return
             }
             correct=0
@@ -489,19 +489,7 @@ for (var i = 0; i < len; i++) {
                     id=[]
                     document.querySelector('[pos="'+i+','+j+'"]').click();
                     perc = Math.floor(Math.random() * 100);
-                    if(perc<=ia)
-                        document.querySelector('[pos="'+k+','+l+'"]').click();
-                    else{
-                        do{
-                        do {
-                            var x2 = Math.floor(Math.random() * len);
-                            var y2 = Math.floor(Math.random() * len);
-                        } while (memoria[y2][x2] == 'finded');
-                    }while(i==x2 && j==y2)
-                    }while(
-                        document.querySelector('[pos="'+y2+','+x2+'"]').getAttribute('class')=='clicked'
-                        )
-                    
+                    document.querySelector('[pos="'+k+','+l+'"]').click();
                     
                         
                             console.log('run correct')
