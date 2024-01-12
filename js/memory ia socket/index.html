@@ -144,7 +144,7 @@
         
 
 
-        function fine(){
+        function fine(campo){
     if(punteggio['bot']+punteggio['player']>=(campo*campo)/2){
 
     alert(punteggio)
@@ -282,7 +282,7 @@
                 // Handle card logic
                 handleCardLogic(imageUrl, pos)
                     .then(() => {
-                        
+                        fine(memoria.length)
                     })
                     .catch((error) => {
                         console.error('Error:', error);
@@ -363,7 +363,7 @@ function handleCardLogic(imageUrl, pos) {
             resolve(); // Resolve the promise if no specific condition is met
         }
     });
-    if(fine()){
+    if(fine(memoria.length)){
                 return
             }
 }
@@ -467,7 +467,7 @@ function cover(poss) {
 
 
         function mossabot(matrice) {
-            if(fine()){
+            if(fine(memoria.length)){
                 return
             }
             correct=0
@@ -489,7 +489,17 @@ for (var i = 0; i < len; i++) {
                     id=[]
                     document.querySelector('[pos="'+i+','+j+'"]').click();
                     perc = Math.floor(Math.random() * 100);
-                    document.querySelector('[pos="'+k+','+l+'"]').click();
+                    if(ia<=perc){
+                        document.querySelector('[pos="'+k+','+l+'"]').click();
+                    }else{
+                        do{
+                            do{
+                                x=Math.floor(Math.random() * len);
+                                y=Math.floor(Math.random() * len);
+                            }while(x==j||y==i)
+                        }while(document.querySelector('[pos="'+y+','+x+'"]').getAttribute('class')=='clicked')
+                        document.querySelector('[pos="'+y+','+x+'"]').click();
+                    }
                     
                         
                             console.log('run correct')
