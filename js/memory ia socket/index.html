@@ -141,9 +141,11 @@
         </table>
     </center>
     <script>
-
+        const player=true
+        const bot=false
+        turno=player
 function mossabot(matrice) {
-    console.log(turno)
+    console.log('bot')
     var len = matrice.length;
 
     for (var i = 0; i < len; i++) {
@@ -154,26 +156,29 @@ function mossabot(matrice) {
             for (var k = 0; k < len; k++) {
                 for (var l = 0; l < len; l++) {
                     if (valoreCorrente == matrice[k][l] && (i != k || j != l) && valoreCorrente != undefined && valoreCorrente != 'finded') {
-                        console.log('Indici:', i, j, 'e', k, l);
                         
+                        girata=[]
+                        id=[]
                         document.querySelector('[pos="'+i+','+j+'"]').click();
                         document.querySelector('[pos="'+k+','+l+'"]').click();
-                        turno=!turno
+
                         return
                     }
                 }
             }
         }
     }
-    for (var h = 0; h < 2; h++) {
-        do {
-            var x = Math.floor(Math.random() * len);
-            var y = Math.floor(Math.random() * len);
-        } while (memoria[y][x] == 'finded');
-        document.querySelector('[pos="'+y+','+x+'"]').click();
-        
-    }
-    turno=!turno
+    
+    do {
+        var x = Math.floor(Math.random() * len);
+        var y = Math.floor(Math.random() * len);
+    } while (memoria[y][x] == 'finded');
+    do {
+        var x2 = Math.floor(Math.random() * len);
+        var y2 = Math.floor(Math.random() * len);
+    } while (memoria[y][x] == 'finded');
+    document.querySelector('[pos="'+y+','+x+'"]').click();
+    document.querySelector('[pos="'+y2+','+x2+'"]').click();
 }
 
 
@@ -266,13 +271,17 @@ function mossabot(matrice) {
             });
 
             function clickHandler() {
-                click.call(this);
+                clk.call(this);
             }
 
-            carta_turno = 0;
+
+            
+            
             girata = [];
             id = [];
-            function click() {
+            function clk() {
+                
+
                 const blockElement = document.getElementById('block');
                 const clickedElement = this;
                 const imageElement = clickedElement.querySelector("#back img");
@@ -282,29 +291,16 @@ function mossabot(matrice) {
                 x=pos.split(',')[1]
                 y=pos.split(',')[0]
                 memoria[y][x]=imageUrl
-                console.log(memoria)
+                
 
                 
                 // Show block for a short duration
-                blockElement.style.display = 'block';
-                setTimeout(() => {
-                    if(turno==true){
-                        blockElement.style.display = 'none';
-                        
-                    }else{
-                        console.log('turno bot')
-                        setTimeout(() => {
-                            mossabot(memoria)
-                        }, 1000);
-                        blockElement.style.display = 'none';
-                    }
-                }, 500);
 
                 // Toggle "clicked" class
                 clickedElement.classList.toggle("clicked");
 
                 // Remove click event listener
-                clickedElement.removeEventListener("click", click);
+                clickedElement.removeEventListener("click", clk);
 
                 // Handle card logic
                 handleCardLogic(imageUrl, pos)
@@ -318,14 +314,22 @@ function mossabot(matrice) {
 
 function handleCardLogic(imageUrl, pos) {
     return new Promise((resolve, reject) => {
+        
         girata.push(imageUrl);
         id.push(pos);
         
         if (girata.length === 2) {
             idtmp=id
             if (girata[0] !== girata[1]) {
-                turno = !turno;
-                
+                if(turno==player){
+                    turno=bot
+                    setTimeout(() => {
+                        mossabot(memoria)
+                        console.log('bot player errore')
+                    }, 1000);
+                }else{
+                    turno=player
+                }
                 id = [];
                 girata = [];
                 resolve();
@@ -333,15 +337,22 @@ function handleCardLogic(imageUrl, pos) {
                 document.getElementById('block').style.display = 'block';
                 setTimeout(() => {
                     cover(idtmp);
-                    turno=!turno
+                    
                     document.getElementById('block').style.display = 'none';
+                    
                 }, 500);
                 // Reset cards after a delay
             } else {
+                
                 // Same cards were clicked, log an error and resolve
-                //console.log('Same cards clicked');
+                
                 id = [];
                 girata = [];
+                
+                    if(!turno){
+                        console.log('bot continua corretto')
+                        mossabot(memoria)
+                    }
                 primo=idtmp[0]
                 secondo=idtmp[1]
                 x1=primo.split(',')[1]
@@ -351,17 +362,17 @@ function handleCardLogic(imageUrl, pos) {
                 memoria[y1][x1]='finded'
                 memoria[y2][x2]='finded'
                 resolve();
+                
             }
         } else if (girata.length > 2) {
             // Should not have more than 2 cards in girata, log an error and resolve
-            //console.log('More than 2 cards in girata');
+            
             id = [];
             girata = [];
             resolve();
         } else {
             resolve(); // Resolve the promise if no specific condition is met
         }
-        //console.log(girata);
     });
 }
 
@@ -417,8 +428,9 @@ function cover(poss) {
 
                 var frontDiv = document.createElement("div");
                 frontDiv.id = "front";
-                var frontText = document.createElement("p");
-                frontText.textContent = "Lato avanti";
+                var frontText = document.createElement("img");
+                frontText.setAttribute('src', 'image/avanti.jpeg');
+                frontText.setAttribute('width', wi);
                 frontDiv.appendChild(frontText);
 
                 var backDiv = document.createElement("div");
