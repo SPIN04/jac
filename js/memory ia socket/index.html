@@ -141,7 +141,46 @@
         </table>
     </center>
     <script>
-        turno = 0;
+
+function mossabot(matrice) {
+    console.log(turno)
+    var len = matrice.length;
+
+    for (var i = 0; i < len; i++) {
+        for (var j = 0; j < len; j++) {
+            var valoreCorrente = matrice[i][j];
+
+            // Scorrere il resto della matrice per trovare valori identici
+            for (var k = 0; k < len; k++) {
+                for (var l = 0; l < len; l++) {
+                    if (valoreCorrente == matrice[k][l] && (i != k || j != l) && valoreCorrente != undefined && valoreCorrente != 'finded') {
+                        console.log('Indici:', i, j, 'e', k, l);
+                        
+                        document.querySelector('[pos="'+i+','+j+'"]').click();
+                        document.querySelector('[pos="'+k+','+l+'"]').click();
+                        turno=!turno
+                        return
+                    }
+                }
+            }
+        }
+    }
+    for (var h = 0; h < 2; h++) {
+        do {
+            var x = Math.floor(Math.random() * len);
+            var y = Math.floor(Math.random() * len);
+        } while (memoria[y][x] == 'finded');
+        document.querySelector('[pos="'+y+','+x+'"]').click();
+        
+    }
+    turno=!turno
+}
+
+
+
+
+        memoria=[[]]
+        turno = true;
         const cardsArray = [];
 
         for (let i = 0; i < 98; i++) {
@@ -198,13 +237,15 @@
             campo = document.getElementById('difficultyRange').value;
             campo = (campo == 0) ? 4 : (campo == 20) ? 6 : (campo == 40) ? 8 : (campo == 60) ? 10 : (campo == 80) ?
                 12 : (campo == 100) ? 14 : '';
-
+            for(j=0;j<campo;j++){
+                memoria[j]=Array(campo)
+            }
             var table = document.getElementById('myTable');
             table.innerHTML = '';
             todo = (campo * campo) / 2;
             for (let i = 0; i < todo; i++) {
                 do {
-                    index = Math.floor(Math.random() * 72);
+                    index = Math.floor(Math.random() * 98);
                 } while (coppie.includes(index));
 
                 coppie.push(cardsArray[index]);
@@ -232,43 +273,59 @@
             girata = [];
             id = [];
             function click() {
-    const blockElement = document.getElementById('block');
-    const clickedElement = this;
-    const imageElement = clickedElement.querySelector("#back img");
-    const imageUrl = imageElement.getAttribute('src');
-    const pos = clickedElement.getAttribute('pos');
+                const blockElement = document.getElementById('block');
+                const clickedElement = this;
+                const imageElement = clickedElement.querySelector("#back img");
+                const imageUrl = imageElement.getAttribute('src');
+                const pos = clickedElement.getAttribute('pos');
 
-    // Show block for a short duration
-    blockElement.style.display = 'block';
-    setTimeout(() => {
-        blockElement.style.display = 'none';
-    }, 500);
+                x=pos.split(',')[1]
+                y=pos.split(',')[0]
+                memoria[y][x]=imageUrl
+                console.log(memoria)
 
-    // Toggle "clicked" class
-    clickedElement.classList.toggle("clicked");
+                
+                // Show block for a short duration
+                blockElement.style.display = 'block';
+                setTimeout(() => {
+                    if(turno==true){
+                        blockElement.style.display = 'none';
+                        
+                    }else{
+                        console.log('turno bot')
+                        setTimeout(() => {
+                            mossabot(memoria)
+                        }, 1000);
+                        blockElement.style.display = 'none';
+                    }
+                }, 500);
 
-    // Remove click event listener
-    clickedElement.removeEventListener("click", click);
+                // Toggle "clicked" class
+                clickedElement.classList.toggle("clicked");
 
-    // Handle card logic
-    handleCardLogic(imageUrl, pos)
-        .then(() => {
-            // Continue with any logic that should happen after handling cards
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-}
+                // Remove click event listener
+                clickedElement.removeEventListener("click", click);
+
+                // Handle card logic
+                handleCardLogic(imageUrl, pos)
+                    .then(() => {
+                        // Continue with any logic that should happen after handling cards
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                }
 
 function handleCardLogic(imageUrl, pos) {
     return new Promise((resolve, reject) => {
         girata.push(imageUrl);
         id.push(pos);
-
+        
         if (girata.length === 2) {
+            idtmp=id
             if (girata[0] !== girata[1]) {
                 turno = !turno;
-                idtmp=id
+                
                 id = [];
                 girata = [];
                 resolve();
@@ -276,27 +333,35 @@ function handleCardLogic(imageUrl, pos) {
                 document.getElementById('block').style.display = 'block';
                 setTimeout(() => {
                     cover(idtmp);
-                    
+                    turno=!turno
                     document.getElementById('block').style.display = 'none';
                 }, 500);
                 // Reset cards after a delay
             } else {
                 // Same cards were clicked, log an error and resolve
-                console.log('Same cards clicked');
+                //console.log('Same cards clicked');
                 id = [];
                 girata = [];
+                primo=idtmp[0]
+                secondo=idtmp[1]
+                x1=primo.split(',')[1]
+                y1=primo.split(',')[0]
+                x2=secondo.split(',')[1]
+                y2=secondo.split(',')[0]
+                memoria[y1][x1]='finded'
+                memoria[y2][x2]='finded'
                 resolve();
             }
         } else if (girata.length > 2) {
             // Should not have more than 2 cards in girata, log an error and resolve
-            console.log('More than 2 cards in girata');
+            //console.log('More than 2 cards in girata');
             id = [];
             girata = [];
             resolve();
         } else {
             resolve(); // Resolve the promise if no specific condition is met
         }
-        console.log(girata);
+        //console.log(girata);
     });
 }
 
@@ -305,20 +370,27 @@ function handleCardLogic(imageUrl, pos) {
 
 
 
-            function cover(poss) {
-                a = poss[0];
-                b = poss[1];
-                c = document.querySelector('[pos="' + a + '"]');
-                d = document.querySelector('[pos="' + b + '"]');
-                c.removeAttribute('class');
-                d.removeAttribute('class');
-                c.addEventListener("click", clickHandler, {
-                    once: true
-                });
-                d.addEventListener("click", clickHandler, {
-                    once: true
-                });
-            }
+function cover(poss) {
+    a = poss[0];
+    b = poss[1];
+    
+    c = document.querySelector('[pos="' + a + '"]');
+    d = document.querySelector('[pos="' + b + '"]');
+    c.removeAttribute('class');
+    d.removeAttribute('class');
+    c.addEventListener("click", clickHandler, {
+        once: true
+    });
+    d.addEventListener("click", clickHandler, {
+        once: true
+    });
+
+    // Dopo l'animazione di copertura, inverti il turno
+    setTimeout(() => {
+        turno = !turno;  // Inverti direttamente il turno
+        document.getElementById('block').style.display = 'none';
+    }, 500);
+}
 
             function generariga(ncelle, numriga) {
                 var table = document.getElementById('myTable');
