@@ -6,60 +6,116 @@
     <title>Document</title>
 </head>
 <style>
+    body{
+        background-color: rgb(50, 50, 50);
+    }
     td{
         padding: 10px;
         border: 2px black solid;
     }
+
+    [occupato="0"]{
+        background-color:#002efa ;
+    }
 </style>
 <body>
-    div
+    <div id="container">
+        <div id="bottoni">
+            <button onclick="aggiungiNave(1)">Nave da 1</button>
+            <button onclick="aggiungiNave(2)">Nave da 2</button>
+            <button onclick="aggiungiNave(3)">Nave da 3</button>
+            <button onclick="aggiungiNave(4)">Nave da 4</button>
+            <button onclick="aggiungiNave(5)">Nave da 5</button>
+        </div>
+
+        <div id="campo"></div>
+    </div>
+    
 </body>
 </html>
 
 <script src="Nave.js"></script>
 <script>
+    //generazione campo
+    document.addEventListener('DOMContentLoaded', function () {
+        const dimensione = 10
+
+        //creazione tabella e setting attributi
+        const tabella = document.createElement("table")
+        const campo = document.getElementById("campo")
+
+        tabella.setAttribute("id", "tabella")
+        tabella.classList.add("tabella")
+
+        //creazione rige e colonne
+        for(let y = 0; y< dimensione; y++){
+            let riga = document.createElement("tr")
+
+            for(let x = 0; x < dimensione; x++){
+                let cella = document.createElement("td")
+                cella.classList.add("cella")
+                cella.setAttribute("x", x)
+                cella.setAttribute("y", y)
+                cella.setAttribute("occupato", 0)
+                riga.appendChild(cella)
+            }
+            tabella.appendChild(riga)
+        }
+        campo.appendChild(tabella)
+    });
 
 
-// Funzione per stampare testo colorato
-function stampaTestoColorato(testo, colore) {
-    // Definisci i codici ANSI per i colori
-    const colori = {
-        reset: "\x1b[0m",
-        rosso: "\x1b[31m",
-        verde: "\x1b[32m",
-        giallo: "\x1b[33m",
-        blu: "\x1b[34m",
-        magenta: "\x1b[35m",
-        ciano: "\x1b[36m",
-        bianco: "\x1b[37m"
-    };
-
-    // Verifica se il colore specificato è valido
-    const coloreSelezionato = colori[colore] || colori.reset;
-
-    // Stampa il testo colorato sulla console
-    console.log(coloreSelezionato + testo + colori.reset);
-}
-
-// Esempi di utilizzo
-//stampaTestoColorato("Testo rosso", "rosso");
-//stampaTestoColorato("Testo verde", "verde");
-//stampaTestoColorato("Testo blu", "blu");
+    //creazione navi
+    function aggiungiNave(lunghezza){
+        let celleDisponibili = document.querySelectorAll("[occupato=0]")
+        celleDisponibili.forEach(function(elemento){
+            elemento.addEventListener("hover", function(){
+                calcolaPosizione
+            })
+        })
+    }
 
 
+    // Funzione per stampare testo colorato
+    function stampaTestoColorato(testo, colore) {
+        // Definisci i codici ANSI per i colori
+        const colori = {
+            reset: "\x1b[0m",
+            rosso: "\x1b[31m",
+            verde: "\x1b[32m",
+            giallo: "\x1b[33m",
+            blu: "\x1b[34m",
+            magenta: "\x1b[35m",
+            ciano: "\x1b[36m",
+            bianco: "\x1b[37m"
+        };
 
-// Funzione per stampare testo con colore RGB sulla console
-function stampaTestoColoratoRGB(testo, coloreRGB) {
-    console.log(`%c${testo}`, `color: rgb(${coloreRGB.join(',')});`);
-}
+        // Verifica se il colore specificato è valido
+        const coloreSelezionato = colori[colore] || colori.reset;
 
-// Funzione per stampare testo con colore HEX sulla console
-function stampaTestoColoratoHEX(testo, coloreHEX) {
-    console.log(`%c${testo}`, `color: ${coloreHEX};`);
-}
+        // Stampa il testo colorato sulla console
+        console.log(coloreSelezionato + testo + colori.reset);
+    }
 
-// Esempi di utilizzo
-//stampaTestoColoratoRGB("Testo con colore RGB", [255, 0, 0]);
-//stampaTestoColoratoHEX("Testo con colore HEX", "#00ff00");
+    // Esempi di utilizzo
+    //stampaTestoColorato("Testo rosso", "rosso");
+    //stampaTestoColorato("Testo verde", "verde");
+    //stampaTestoColorato("Testo blu", "blu");
+
+
+
+    // Funzione per stampare testo con colore RGB sulla console
+    function stampaTestoColoratoRGB(testo, coloreRGB) {
+        console.log(`%c${testo}`, `color: rgb(${coloreRGB.join(',')});`);
+    }
+
+    // Funzione per stampare testo con colore HEX sulla console
+    function stampaTestoColoratoHEX(testo, coloreHEX) {
+        console.log(`%c${testo}`, `color: ${coloreHEX};`);
+    }
+
+    // Esempi di utilizzo
+    //stampaTestoColoratoRGB("Testo con colore RGB", [255, 0, 0]);
+    //stampaTestoColoratoHEX("Testo con colore HEX", "#00ff00");
 
 </script>
