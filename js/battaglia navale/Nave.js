@@ -1,3 +1,7 @@
+function stampa(testo, coloreRGB) {
+    console.log(`%c${testo}`, `color: rgb(${coloreRGB.join(',')});`);
+}
+
 class Nave {
     constructor(lunghezza = 1) {
         this.lunghezza = lunghezza;
@@ -24,7 +28,8 @@ class Nave {
     }
 
     get_info() {
-        console.log(this.celle);
+        let to_print=[this.affondata]
+        stampa(to_print,[69,69,69])
     }
 
     ruota() {
@@ -55,5 +60,4 @@ class Nave {
 }
 
 let nave = new Nave(5);
-
-nave.get_info();
+nave.get_info()

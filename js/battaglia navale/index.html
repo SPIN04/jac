@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        cursor:url(cursored.png),auto;
+    }
+    body{
+        background-color: rgb(50, 50, 50);
+        
+    }
+    td{
+        padding: 10px;
+        border: 2px black solid;
+    }
+
+    [occupato="0"]{
+        background-color:#002efa ;
+    }
+
+</style>
+<body>
+    <div id="container">
+        <div id="bottoni">
+            <button onclick="aggiungiNave(1, 0)" class="bottoneLunghezza">Nave da 1</button>
+            <button onclick="aggiungiNave(2, 0)" class="bottoneLunghezza">Nave da 2</button>
+            <button onclick="aggiungiNave(3, 0)" class="bottoneLunghezza">Nave da 3</button>
+            <button onclick="aggiungiNave(4, 0)" class="bottoneLunghezza">Nave da 4</button>
+            <button onclick="aggiungiNave(5, 0)" class="bottoneLunghezza">Nave da 5</button>
+            <button onclick="ruota()">Ruota nave</button>
+        </div>
+
+        <div id="campo"></div>
+    </div>
+    
+</body>
+</html>
+<script src= "ciao disable.js"></script>
+<script src="Nave.js"></script>
+
+<script>
+    
+
+    //generazione campo
+    document.addEventListener('DOMContentLoaded', function () {
+        const dimensione = 10
+
+        //creazione tabella e setting attributi
+        const tabella = document.createElement("table")
+        const campo = document.getElementById("campo")
+
+        tabella.setAttribute("id", "tabella")
+        tabella.classList.add("tabella")
+
+        //creazione rige e colonne
+        for(let y = 0; y< dimensione; y++){
+            let riga = document.createElement("tr")
+
+            for(let x = 0; x < dimensione; x++){
+                let cella = document.createElement("td")
+                cella.classList.add("cella")
+                cella.setAttribute("x", x)
+                cella.setAttribute("y", y)
+                cella.setAttribute("id", y+"/"+x)
+                cella.setAttribute("occupato", 0)
+                riga.appendChild(cella)
+            }
+            tabella.appendChild(riga)
+        }
+        campo.appendChild(tabella)
+    });
+
+
+    function aggiungiNave(lunghezza, orientamento) {
+        let celleDisponibili = document.querySelectorAll("[occupato='0']");
+        celleDisponibili.forEach(function (elemento) {
+            elemento.addEventListener("mouseover", function (evento) {
+                let x = elemento.getAttribute("x");
+                let y = elemento.getAttribute("y");
+                let occupato = elemento.getAttribute("occupato");
+                calcolaPosizione(elemento, orientamento, x, y, lunghezza, occupato);
+            });
+            elemento.addEventListener("mouseout", function (evento) {
+                resettaColori();
+            });
+        });
+    }
+
+function resettaColori() {
+    let tutteCelle = document.querySelectorAll("[occupato='0']");
+    tutteCelle.forEach(function (elemento) {
+        elemento.style.backgroundColor = "#002efa";
+    });
+}
+
+function calcolaPosizione(elemento, orientamento, attrX, attrY, lunghezza, stato) {
+    elemento.style.backgroundColor = "green";
+    const idPartenza = elemento.getAttribute("id").split("/");
+    const x = parseInt(idPartenza[0]);
+    const y = parseInt(idPartenza[1]);
+
+    // calcolo per posizione orizzontale
+    if (orientamento == 0) {
+        for (let i = x; i < (lunghezza + x); i++) {
+            let id = i + "/" + y; // Inverti l'ordine di y e x
+            document.getElementById(id).style.backgroundColor = "red";
+        }
+    }
+    // calcolo per posizione verticale
+    else {
+        for (let j = y; j < (lunghezza + y); j++) {
+            let id = x + "/" + j; // Inverti l'ordine di y e x
+            document.getElementById(id).style.backgroundColor = "red";
+        }
+    }
+}
+
+
+
+    function ruota() {
+    // Seleziona tutti gli elementi con la classe "bottoneLunghezza"
+    var bottoniLunghezza = document.querySelectorAll('.bottoneLunghezza');
+
+    // Itera sugli elementi e cambia gli attributi onclick
+    bottoniLunghezza.forEach(function(bottone) {
+        // Ottieni gli argomenti correnti dall'attributo onclick
+        var argomentiAttuali = bottone.getAttribute('onclick').match(/\(([^)]+)\)/)[1].split(',');
+
+        // Cambia il secondo parametro tra 0 e 1
+        argomentiAttuali[1] = 1 - argomentiAttuali[1];
+
+        // Costruisci la nuova stringa onclick con gli argomenti modificati
+        var nuovaOnclick = 'aggiungiNave(' + argomentiAttuali.join(',') + ')';
+
+        // Assegna il nuovo valore all'attributo onclick
+        bottone.setAttribute('onclick', nuovaOnclick);
+    });
+}
+
+
+    // Funzione per stampare testo colorato
+    function stampaTestoColorato(testo, colore) {
+        // Definisci i codici ANSI per i colori
+        const colori = {
+            reset: "\x1b[0m",
+            rosso: "\x1b[31m",
+            verde: "\x1b[32m",
+            giallo: "\x1b[33m",
+            blu: "\x1b[34m",
+            magenta: "\x1b[35m",
+            ciano: "\x1b[36m",
+            bianco: "\x1b[37m"
+        };
+
+        // Verifica se il colore specificato è valido
+        const coloreSelezionato = colori[colore] || colori.reset;
+
+        // Stampa il testo colorato sulla console
+        console.log(coloreSelezionato + testo + colori.reset);
+    }
+
+    // Esempi di utilizzo
+    //stampaTestoColorato("Testo rosso", "rosso");
+    //stampaTestoColorato("Testo verde", "verde");
+    //stampaTestoColorato("Testo blu", "blu");
+
+
+
+    // Funzione per stampare testo con colore RGB sulla console
+    function stampaTestoColoratoRGB(testo, coloreRGB) {
+        console.log(`%c${testo}`, `color: rgb(${coloreRGB.join(',')});`);
+    }
+
+    // Funzione per stampare testo con colore HEX sulla console
+    function stampaTestoColoratoHEX(testo, coloreHEX) {
+        console.log(`%c${testo}`, `color: ${coloreHEX};`);
+    }
+
+    // Esempi di utilizzo
+    //stampaTestoColoratoRGB("Testo con colore RGB", [255, 0, 0]);
+    //stampaTestoColoratoHEX("Testo con colore HEX", "#00ff00");
+
+</script>

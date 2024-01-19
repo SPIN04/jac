@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Battaglia Navale</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin: 20px;
+    }
+
+    td {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #aaa;
+      text-align: center;
+    }
+
+    td.ship {
+      background-color: #3498db;
+    }
+
+    td.hit {
+      background-color: #e74c3c;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Battaglia Navale</h1>
+
+<table id="board"></table>
+<button onclick="startGame()">Inizia il gioco</button>
+
+<script>
+  const boardSize = 10;
+  let board = [];
+  let ships = 5;
+  let shipsPlaced = 0;
+
+  function initializeBoard() {
+    for (let i = 0; i < boardSize; i++) {
+      board[i] = [];
+      for (let j = 0; j < boardSize; j++) {
+        board[i][j] = { ship: false, hit: false };
+      }
+    }
+  }
+
+  function drawBoard() {
+    const table = document.getElementById('board');
+    table.innerHTML = '';
+
+    for (let i = 0; i < boardSize; i++) {
+      const row = document.createElement('tr');
+      for (let j = 0; j < boardSize; j++) {
+        const cell = document.createElement('td');
+        if (board[i][j].ship) {
+          cell.classList.add('ship');
+        } else if (board[i][j].hit) {
+          cell.classList.add('hit');
+        } else {
+          cell.addEventListener('click', () => placeShip(i, j));
+        }
+        row.appendChild(cell);
+      }
+      table.appendChild(row);
+    }
+  }
+
+  function placeShip(row, col) {
+    if (shipsPlaced < ships) {
+      board[row][col].ship = true;
+      shipsPlaced++;
+      drawBoard();
+    }
+
+    if (shipsPlaced === ships) {
+      alert("Tutte le navi sono posizionate. Clicca su 'Inizia il gioco' per cominciare la battaglia!");
+    }
+  }
+
+  function startGame() {
+    if (shipsPlaced < ships) {
+      alert("Posiziona tutte le navi prima di iniziare il gioco!");
+      return;
+    }
+
+    alert("Inizia la battaglia!");
+    drawBoard(); // Visualizza la configurazione finale prima di iniziare il gioco
+  }
+
+  // Inizializzazione del gioco
+  initializeBoard();
+  drawBoard();
+</script>
+
+</body>
+</html>
