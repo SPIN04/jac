@@ -1,0 +1,132 @@
+<html>
+    <head>
+        <style>
+            .divCarta{
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+                height: 60px;
+                width: 60px;
+                background-color: blueviolet;
+                border: 1px solid black;
+            }
+            .divCarta:hover{
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+                height: 60px;
+                width: 60px;
+                background-color: rgba(137, 43, 226, 0.754);
+                border: 1px solid black;
+            }
+
+        </style>
+    </head>
+    <body>
+        <h1>Memory</h1>
+
+        <p>Turno di <span id = "turnoDi">1</span></p>
+        <div id = "campoDiGioco">
+            <table>
+                <tr>
+                    <td><div class="divCarta" id="c_0_0" onclick="cardClick('c_0_0')"></div></td>
+                    <td><div class="divCarta" id="c_0_1" onclick="cardClick('c_0_1')"></div></td>
+                    <td><div class="divCarta" id="c_0_2" onclick="cardClick('c_0_2')"></div></td>
+                    <td><div class="divCarta" id="c_0_3" onclick="cardClick('c_0_3')"></div></td>
+                </tr>
+                <tr>
+                    <td><div class="divCarta" id="c_1_0" onclick="cardClick('c_1_0')"></div></td>
+                    <td><div class="divCarta" id="c_1_1" onclick="cardClick('c_1_1')"></div></td>
+                    <td><div class="divCarta" id="c_1_2" onclick="cardClick('c_1_2')"></div></td>
+                    <td><div class="divCarta" id="c_1_3" onclick="cardClick('c_1_3')"></div></td>
+                </tr>
+                <tr>
+                    <td><div class="divCarta" id="c_2_0" onclick="cardClick('c_2_0')"></div></td>
+                    <td><div class="divCarta" id="c_2_1" onclick="cardClick('c_2_1')"></div></td>
+                    <td><div class="divCarta" id="c_2_2" onclick="cardClick('c_2_2')"></div></td>
+                    <td><div class="divCarta" id="c_2_3" onclick="cardClick('c_2_3')"></div></td>
+                </tr>
+                <tr>
+                    <td><div class="divCarta" id="c_3_0" onclick="cardClick('c_3_0')"></div></td>
+                    <td><div class="divCarta" id="c_3_1" onclick="cardClick('c_3_1')"></div></td>
+                    <td><div class="divCarta" id="c_3_2" onclick="cardClick('c_3_2')"></div></td>
+                    <td><div class="divCarta" id="c_3_3" onclick="cardClick('c_3_3')"></div></td>
+                </tr>
+            </table>
+           <p>G1: <span id = "punteggioG1">0</span></p>
+            <p>G2: <span id = "punteggioG2">0</span></p>
+        </div>
+    </body>
+
+
+    <script>
+        class Carta{
+            constructor(val){
+                this.val = val; 
+                this.scoperta = false; 
+                this.indovinata = false; 
+            }
+        }
+
+
+        
+
+
+
+
+
+
+
+        
+        
+        let vettoreMischiato = shuffleDeck();
+        let campo = getCampo(vettoreMischiato); 
+        console.log(campo); 
+
+
+
+
+
+
+
+
+
+
+        function getCampo(numeri){
+            let campoDiCarte = []; 
+            for(let i = 0; i < numeri.length; i++){
+                let cartaTemp = new Carta(numeri[i]); 
+                campoDiCarte.push(cartaTemp); 
+            }
+            return campoDiCarte; 
+        }
+
+
+
+
+
+
+//------------------------------------------------------------------------------------------------------------------
+        function shuffleDeck(){
+            let carte = [0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7]; 
+            for(let i = 0; i < 50; i ++){
+                let index1 = parseInt(Math.random()*16);      // 0 - 15 
+                let index2 = parseInt(Math.random()*16);      
+                
+                var temp = carte[index1]; 
+                carte[index1] = carte[index2]; 
+                carte[index2] = temp; 
+            }
+            return carte; 
+        }
+
+
+        
+
+    
+
+    </script>
+    
+
+
+</html>

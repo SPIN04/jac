@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+
+
+<script>
+    class CarroArmato {
+  constructor(nome, peso, fabbricazione, arma, corazza, motore,alimentazione, sospensioni, anno_produzione) {
+    this.nome = nome;
+    this.peso = peso;
+    this.fabbricazione = fabbricazione;
+    this.arma = arma;
+    this.corazza = corazza;
+    this.motore = motore;
+    this.alimentazione = alimentazione;
+    this.sospensioni = sospensioni;
+    this.anno_produzione = anno_produzione;
+  }
+
+  getInfo() {
+    return `Carro armato ${this.nome}\n peso ${this.peso} tonnellate\n fabbricazione ${this.fabbricazione}\n arma ${this.arma}\n corazza ${this.corazza} mm\n motore ${this.motore}\n alimentazione ${this.alimentazione}\n sospensioni ${this.sospensioni}\n anno di produzione ${this.anno_produzione}\n\n`;
+  }
+}
+
+const m4a1 = new CarroArmato('M4A1 76 W', 30.8, 'USA', '76 mm M1', 102, 'Continental R975 C1','bestemmie', 'VVSS', 1944);
+console.log(m4a1.getInfo());
+
+const p2640 = new CarroArmato('P26/40', 26, 'Italia', '75 mm 47/40', 80, 'FIAT SPA 260F','bestemmie', 'Christie', 1943);
+console.log(p2640.getInfo());
+
+
+// Funzione per stampare testo colorato
+function stampaTestoColorato(testo, colore) {
+    // Definisci i codici ANSI per i colori
+    const colori = {
+        reset: "\x1b[0m",
+        rosso: "\x1b[31m",
+        verde: "\x1b[32m",
+        giallo: "\x1b[33m",
+        blu: "\x1b[34m",
+        magenta: "\x1b[35m",
+        ciano: "\x1b[36m",
+        bianco: "\x1b[37m"
+    };
+
+    // Verifica se il colore specificato è valido
+    const coloreSelezionato = colori[colore] || colori.reset;
+
+    // Stampa il testo colorato sulla console
+    console.log(coloreSelezionato + testo + colori.reset);
+}
+
+// Esempi di utilizzo
+stampaTestoColorato("Testo rosso", "rosso");
+stampaTestoColorato("Testo verde", "verde");
+stampaTestoColorato("Testo blu", "blu");
+
+
+
+// Funzione per stampare testo con colore RGB sulla console
+function stampaTestoColoratoRGB(testo, coloreRGB) {
+    console.log(`%c${testo}`, `color: rgb(${coloreRGB.join(',')});`);
+}
+
+// Funzione per stampare testo con colore HEX sulla console
+function stampaTestoColoratoHEX(testo, coloreHEX) {
+    console.log(`%c${testo}`, `color: ${coloreHEX};`);
+}
+print('dkfbjhdsgfh')
+// Esempi di utilizzo
+stampaTestoColoratoRGB("Testo con colore RGB", [255, 0, 0]);
+stampaTestoColoratoHEX("Testo con colore HEX", "#00ff00");
+
+</script>
