@@ -43,7 +43,7 @@
 <script src="Nave.js"></script>
 
 <script>
-    
+    posizionabile=false
 
     //generazione campo
     document.addEventListener('DOMContentLoaded', function () {
@@ -87,6 +87,9 @@
             elemento.addEventListener("mouseout", function (evento) {
                 resettaColori();
             });
+            elemento.addEventListener("click", function () {
+                console.log(posizionabile)
+            });
         });
     }
 
@@ -107,15 +110,31 @@ function calcolaPosizione(elemento, orientamento, attrX, attrY, lunghezza, stato
     if (orientamento == 0) {
         for (let i = x; i < (lunghezza + x); i++) {
             let id = i + "/" + y; // Inverti l'ordine di y e x
-            document.getElementById(id).style.backgroundColor = "red";
+            try{
+                document.getElementById(id).style.backgroundColor = "green";
+                posizionabile=true
+            }
+            catch{
+                posizionabile=false
+                document.getElementById(id).style.backgroundColor = "red";
+            }
         }
+        return
     }
     // calcolo per posizione verticale
     else {
         for (let j = y; j < (lunghezza + y); j++) {
             let id = x + "/" + j; // Inverti l'ordine di y e x
-            document.getElementById(id).style.backgroundColor = "red";
+            try{
+                document.getElementById(id).style.backgroundColor = "green";
+                posizionabile=true
+            }
+            catch{
+                posizionabile=false
+                document.getElementById(id).style.backgroundColor = "red";
+            }
         }
+        return
     }
 }
 
