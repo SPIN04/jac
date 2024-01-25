@@ -1,0 +1,252 @@
+<html>
+    <head>
+        <style>
+            .divCarta{
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+                height: 60px;
+                width: 60px;
+                background-color: blueviolet;
+                border: 1px solid black;
+            }
+            .divCarta:hover{
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+                height: 60px;
+                width: 60px;
+                background-color: rgba(137, 43, 226, 0.754);
+                border: 1px solid black;
+            }
+
+        </style>
+    </head>
+    <body>
+        <h1>Memory</h1>
+
+        <p>Turno di <span id = "turnoDi">1</span></p>
+        <div id = "campoDiGioco"></div>
+        <div id = "spazioStatistiche"></div>
+    </body>
+
+
+    <script>
+        //---------------------------------------CLASSI------------------------------------------------------------------------------------
+        class Carta{
+            constructor(val){
+                this.val = val; 
+                this.cercata = false; 
+                this.indovinata = false; 
+            }
+
+            flip(){
+                if(!this.cercata && !this.indovinata){
+                    this.cercata = true; 
+                    return true; 
+                }
+                return false; 
+            }
+        }
+
+
+        class Player{
+            constructor(nome){
+                this.nome = nome; 
+                this.punteggio = 0; 
+            }
+
+
+            //superfluo
+            addScore(){
+                this.punteggio ++; 
+            }
+        }
+//---------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+        //valori di init per creare il gioco 
+        let numeroGiocatori; 
+        let numeroCoppie;
+        
+
+        //oggetti globali per il boardgame 
+        let carte = []; 
+        let players = [];   //array di giocatori (come oggetto Player!)
+
+
+        initGame(); 
+        console.log("Carte all'inizio: "); 
+        console.log(carte); 
+
+
+
+
+        function cardClick(idCard){
+            //c_2 --> ["c", "2"]
+            console.log(idCard); 
+            let index = idCard.split("_")[1]; 
+            console.log(index); 
+
+
+            //completa il gioco....
+        }
+
+
+        function getCarteCercate(){
+            roba=[]
+            for(i=0;i<carte.length;i++){
+                if(carte[i].cercata){
+                    roba.push(i)
+                }
+            }
+            return(roba)
+        }
+
+
+        function initGame(){
+            //si occupa di chiedere le info per il gioco (numero giocatori e dimensioni campo)
+            numeroCoppie = askCouples(); 
+            numeroGiocatori = askPlayers(); 
+            initCampo();            //si occupa di creare il campo come oggetto (logico) 
+            initPlayers(); 
+            createGraphicComponents(); 
+            createGraphicStats(); 
+        }
+
+
+
+        
+        function initPlayers(){
+            for(let i = 0; i < numeroGiocatori; i ++){
+                let nomeTemp = prompt("Nome giocatore " + i); 
+                let giocatoreTemp = new Player(nomeTemp); 
+                players.push(giocatoreTemp); 
+            }
+        }
+
+
+
+
+        function initCampo(){
+            for(let i = 0; i < numeroCoppie; i++){
+                let c = new Carta(i); 
+                let c1 = new Carta(i); 
+                carte.push(c); 
+                carte.push(c1); 
+            }
+            shuffleDeck(); 
+        }
+
+
+
+        //init questions
+        function askPlayers(){
+            let playersNumber; 
+            do{
+                playersNumber = parseInt(prompt("In quanti siete a giocare?")); 
+            }
+            while(playersNumber < 1); 
+            return playersNumber; 
+        }    
+
+        function askCouples(){
+            let couples; 
+            do{
+                couples = parseInt(prompt("Quante coppie di carte? - minimo 4")); 
+            }
+            while(couples < 3); 
+            return couples; 
+        }
+
+//-------------------------------------------FUNZIONI-GRAFICHE-----------------------------------------------------------------------
+        function createGraphicComponents(){
+            let table = document.createElement("table"); 
+            let numeroColonneGrafihe = parseInt(Math.sqrt(numeroCoppie*2));
+            let celleRestanti = numeroCoppie*2; 
+            
+            let counter  = 0; 
+            while(celleRestanti > numeroColonneGrafihe){
+                let riga = document.createElement("tr"); 
+                //FOR CHE CREA LA RIGA COMPLETA
+                for(let i = 0; i < numeroColonneGrafihe; i ++){
+                    //CREA CELLA 
+                    let cellaSingola = getCell(counter); 
+
+                    riga.appendChild(cellaSingola); 
+                    celleRestanti --; 
+                    counter ++; 
+                }
+                table.appendChild(riga); 
+            }
+            //FOR CHE CREA L'ULTIMA RIGA
+            let ultimaRiga = document.createElement("tr"); 
+            for(let i = 0; i < celleRestanti; i++){
+                //CREA CELLA
+                let cellaSingola = getCell(counter); 
+                ultimaRiga.appendChild(cellaSingola); 
+                counter ++; 
+            }
+            table.appendChild(ultimaRiga); 
+            document.getElementById("campoDiGioco").appendChild(table);  
+        }
+
+
+        function createGraphicStats(){
+            //si occupa di creare una riga per ogni giocatore con il suo punteggio
+            let div = document.getElementById("spazioStatistiche"); 
+            for(let i = 0; i < players.length; i++){
+                let p = document.createElement("p"); 
+                p.innerText = players[i].nome  + ": ";
+                let span = document.createElement("span"); 
+                span.setAttribute("id", "g_" + i); 
+                span.innerText = "0"; 
+                p.appendChild(span); 
+                div.appendChild(p); 
+            }
+            //<p>Pippo: <span id = "g_0">0</span></p>
+            //<p>Pippo: <span id = "g_1">0</span></p>
+        }
+
+
+        function getCell(id){
+            let cellaSingola = document.createElement("td"); 
+            cellaSingola.setAttribute("class", "divCarta"); 
+            let idCella = "c_"+id; 
+            cellaSingola.setAttribute("id", id); 
+            cellaSingola.setAttribute("onclick", "cardClick('" + idCella + "')"); 
+            return cellaSingola; 
+        }
+
+
+
+
+//----------------------------------------------------------------------------------------------------------------
+
+
+//-------------------------------------------METODI-DI-SUPPORTO-----------------------------------------------------------------------
+        //TODO: Adatta shuffle deck per un numero n di coppie
+        function shuffleDeck(){ 
+            for(let i = 0; i < numeroCoppie*10; i ++){
+                let index1 = parseInt(Math.random() * (numeroCoppie*2));      
+                let index2 = parseInt(Math.random()* (numeroCoppie*2));        //0 - ((numerocoppie*2)-1)      
+                
+                var temp = carte[index1]; 
+                carte[index1] = carte[index2]; 
+                carte[index2] = temp; 
+            }
+        }
+
+
+        
+
+    
+
+    </script>
+    
+
+
+</html>
